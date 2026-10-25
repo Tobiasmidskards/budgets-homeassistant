@@ -1,0 +1,68 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Forbind til Budgets",
+        "description": "Opret et skrivebeskyttet token i Budgets under Indstillinger → Integrationer, og indsæt det her sammen med adressen på din Budgets-app.",
+        "data": {
+          "url": "Budgets-adresse",
+          "token": "API-token"
+        },
+        "data_description": {
+          "url": "Adressen, du åbner Budgets på, fx https://budgets.example.com.",
+          "token": "Et skrivebeskyttet token fra Indstillinger → Integrationer i Budgets."
+        }
+      },
+      "household": {
+        "title": "Vælg husstand",
+        "data": {
+          "household_id": "Husstand"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Nyt token til Budgets",
+        "description": "Tokenet til {url} virker ikke længere. Opret et nyt i Budgets under Indstillinger → Integrationer.",
+        "data": {
+          "token": "API-token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Budgets kunne ikke nås på den adresse.",
+      "invalid_auth": "Budgets godtog ikke tokenet. Brug et skrivebeskyttet token fra Indstillinger → Integrationer.",
+      "household_missing": "Tokenets bruger er ikke længere medlem af husstanden."
+    },
+    "abort": {
+      "already_configured": "Husstanden er allerede sat op.",
+      "no_households": "Tokenets bruger er ikke medlem af nogen husstand.",
+      "reauth_successful": "Tokenet er opdateret."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "bank_connection": {
+        "name": "Forbindelse til {bank}"
+      }
+    },
+    "sensor": {
+      "total_balance": { "name": "Samlet saldo" },
+      "left_this_month": { "name": "Tilbage denne måned" },
+      "spent_this_month": { "name": "Brugt denne måned" },
+      "room_this_month": { "name": "Rum denne måned" },
+      "per_day": { "name": "Pr. dag" },
+      "month_end_forecast": { "name": "Prognose ved månedens slut" },
+      "days_until_payday": { "name": "Dage til løn" },
+      "payday": { "name": "Lønningsdag" },
+      "last_salary": { "name": "Sidste løn" },
+      "last_sync": { "name": "Sidste banksynkronisering" },
+      "next_sync": { "name": "Næste banksynkronisering" },
+      "consent_days_remaining": { "name": "Dage tilbage af banksamtykke" },
+      "left_over_per_month": { "name": "Til overs pr. måned" },
+      "buffer_months": { "name": "Buffer i måneder" },
+      "fixed_expenses_share": { "name": "Andel faste udgifter" },
+      "account_spent_this_month": { "name": "Brugt denne måned" },
+      "money_in_this_month": { "name": "Ind denne måned" },
+      "change_today": { "name": "Ændring i dag" }
+    }
+  }
+}

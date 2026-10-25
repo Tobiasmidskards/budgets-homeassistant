@@ -1,0 +1,68 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect to Budgets",
+        "description": "Create a read-only token in Budgets under Settings → Integrations, and paste it here with the address of your Budgets app.",
+        "data": {
+          "url": "Budgets URL",
+          "token": "API token"
+        },
+        "data_description": {
+          "url": "The address you open Budgets on, for example https://budgets.example.com.",
+          "token": "A read-only token from Settings → Integrations in Budgets."
+        }
+      },
+      "household": {
+        "title": "Choose a household",
+        "data": {
+          "household_id": "Household"
+        }
+      },
+      "reauth_confirm": {
+        "title": "New token for Budgets",
+        "description": "The token for {url} no longer works. Create a new one in Budgets under Settings → Integrations.",
+        "data": {
+          "token": "API token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not reach Budgets at that address.",
+      "invalid_auth": "Budgets did not accept the token. Use a read-only token from Settings → Integrations.",
+      "household_missing": "The token's user is no longer a member of this household."
+    },
+    "abort": {
+      "already_configured": "This household is already set up.",
+      "no_households": "The token's user isn't a member of any household.",
+      "reauth_successful": "The token was updated."
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "bank_connection": {
+        "name": "{bank} connection"
+      }
+    },
+    "sensor": {
+      "total_balance": { "name": "Total balance" },
+      "left_this_month": { "name": "Left this month" },
+      "spent_this_month": { "name": "Spent this month" },
+      "room_this_month": { "name": "Room this month" },
+      "per_day": { "name": "Per day" },
+      "month_end_forecast": { "name": "Month-end forecast" },
+      "days_until_payday": { "name": "Days until payday" },
+      "payday": { "name": "Payday" },
+      "last_salary": { "name": "Last salary" },
+      "last_sync": { "name": "Last bank sync" },
+      "next_sync": { "name": "Next bank sync" },
+      "consent_days_remaining": { "name": "Bank consent days left" },
+      "left_over_per_month": { "name": "Left over per month" },
+      "buffer_months": { "name": "Buffer in months" },
+      "fixed_expenses_share": { "name": "Fixed expenses share" },
+      "account_spent_this_month": { "name": "Spent this month" },
+      "money_in_this_month": { "name": "Money in this month" },
+      "change_today": { "name": "Change today" }
+    }
+  }
+}
