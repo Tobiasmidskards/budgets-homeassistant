@@ -37,3 +37,14 @@ jobs:
       - run: pip install ruff
       - run: ruff check .
       - run: ruff format --check .
+
+  # The newest Home Assistant, which needs a newer Python and catches deprecations that have turned into errors.
+  tests-latest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: pip install pytest-homeassistant-custom-component
+      - run: pytest -q

@@ -39,6 +39,7 @@ class BudgetsCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     def __init__(self, hass: HomeAssistant, entry: BudgetsConfigEntry, api: BudgetsApi) -> None:
         super().__init__(hass, _LOGGER, config_entry=entry, name=DOMAIN, update_interval=UPDATE_INTERVAL)
         self.api = api
+        self.household_device_id: str | None = None
         self.household_id: int = entry.data[CONF_HOUSEHOLD_ID]
         self._store: Store[dict[str, Any]] = Store(hass, STORAGE_VERSION, f"{DOMAIN}.{entry.entry_id}")
         self._position: dict[str, Any] = {}

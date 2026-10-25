@@ -75,6 +75,20 @@ async def test_adds_sensors_for_the_household_and_each_account(
     )
 
 
+async def test_keeps_an_account_sensor_when_it_is_renamed(
+    hass: HomeAssistant, aioclient_mock: AiohttpClientMocker, config_entry, summary
+) -> None:
+    mock_summary(aioclient_mock, summary)
+    await set_up(hass, config_entry)
+
+    er.async_get(hass).async_update_entity(
+        entity_id(hass, "#7-account-3-balance"), new_entity_id="sensor.budgets_min_konto"
+    )
+    await hass.async_block_till_done()
+
+    assert hass.states.get("sensor.budgets_min_konto").state == "1830.5"
+
+
 async def test_fires_an_event_for_each_new_transaction_but_not_for_history(
     hass: HomeAssistant, aioclient_mock: AiohttpClientMocker, config_entry, summary
 ) -> None:

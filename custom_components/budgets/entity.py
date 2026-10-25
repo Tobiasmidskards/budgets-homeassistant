@@ -11,6 +11,9 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN
 from .coordinator import BudgetsCoordinator
 
+# Home Assistant 2026.8 links a device to its parent by device id; `via_device` (an identifier) is deprecated there.
+LINKS_BY_DEVICE_ID = "via_device_id" in DeviceInfo.__annotations__
+
 ROLE_MODELS = {
     "spending": "Everyday account",
     "budget": "Budget account",
@@ -22,6 +25,18 @@ ROLE_MODELS = {
 }
 
 
+def household_device_info(coordinator: BudgetsCoordinator) -> DeviceInfo:
+    """The household's device, which the accounts' devices hang under."""
+    household = coordinator.data["household"]
+    return DeviceInfo(
+        identifiers={(DOMAIN, household_identifier(coordinator))},
+        name=household["name"],
+        manufacturer="Budgets",
+        entry_type=DeviceEntryType.SERVICE,
+        configuration_url=coordinator.config_entry.data[CONF_URL],
+    )
+
+
 class BudgetsEntity(CoordinatorEntity[BudgetsCoordinator]):
     """An entity on the household's device."""
 
@@ -29,15 +44,8 @@ class BudgetsEntity(CoordinatorEntity[BudgetsCoordinator]):
 
     def __init__(self, coordinator: BudgetsCoordinator, key: str) -> None:
         super().__init__(coordinator)
-        household = coordinator.data["household"]
         self._attr_unique_id = f"{coordinator.config_entry.unique_id}-{key}"
-        self._attr_device_info = DeviceInfo(
-            identifiers={(DOMAIN, household_identifier(coordinator))},
-            name=household["name"],
-            manufacturer="Budgets",
-            entry_type=DeviceEntryType.SERVICE,
-            configuration_url=coordinator.config_entry.data[CONF_URL],
-        )
+        self._attr_device_info = household_device_info(coordinator)
 
 
 class BudgetsAccountEntity(CoordinatorEntity[BudgetsCoordinator]):
@@ -54,9 +62,12 @@ class BudgetsAccountEntity(CoordinatorEntity[BudgetsCoordinator]):
             name=account["name"],
             manufacturer=account.get("bank") or "Budgets",
             model=ROLE_MODELS.get(account.get("role") or "", "Account"),
-            via_device=(DOMAIN, household_identifier(coordinator)),
             entry_type=DeviceEntryType.SERVICE,
         )
+        if LINKS_BY_DEVICE_ID:
+            self._attr_device_info["via_device_id"] = coordinator.household_device_id
+        else:
+            self._attr_device_info["via_device"] = (DOMAIN, household_identifier(coordinator))
 
     @property
     def account(self) -> dict[str, Any] | None:
