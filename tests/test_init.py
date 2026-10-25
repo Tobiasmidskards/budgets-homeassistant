@@ -66,13 +66,15 @@ async def test_adds_sensors_for_the_household_and_each_account(
     assert hass.states.get(entity_id(hass, "#7-fixed_expenses_share")).state == "48.0"
     assert hass.states.get(entity_id(hass, "connection-3")).state == "off"
 
-    devices = dr.async_get(hass)
-    account = devices.async_get_device(identifiers={("budgets", "https://budgets.example.com#7-account-3")})
+    devices = {
+        identifier: device
+        for device in dr.async_entries_for_config_entry(dr.async_get(hass), config_entry.entry_id)
+        for _, identifier in device.identifiers
+    }
+    account = devices["https://budgets.example.com#7-account-3"]
     assert account.name == "Min konto"
     assert account.model == "Everyday account"
-    assert (
-        account.via_device_id == devices.async_get_device(identifiers={("budgets", "https://budgets.example.com#7")}).id
-    )
+    assert account.via_device_id == devices["https://budgets.example.com#7"].id
 
 
 async def test_keeps_an_account_sensor_when_it_is_renamed(
