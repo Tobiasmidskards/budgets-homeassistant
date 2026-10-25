@@ -28,6 +28,7 @@ USER_SCHEMA = vol.Schema(
         vol.Required(CONF_TOKEN): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD)),
     }
 )
+EXAMPLE_URL = "https://budgets.example.com"
 TOKEN_SCHEMA = vol.Schema({vol.Required(CONF_TOKEN): TextSelector(TextSelectorConfig(type=TextSelectorType.PASSWORD))})
 
 
@@ -69,6 +70,7 @@ class BudgetsConfigFlow(ConfigFlow, domain=DOMAIN):
             step_id="user",
             data_schema=self.add_suggested_values_to_schema(USER_SCHEMA, user_input or {}),
             errors=errors,
+            description_placeholders={"example_url": EXAMPLE_URL},
         )
 
     async def async_step_household(self, user_input: dict[str, Any] | None = None) -> ConfigFlowResult:
